@@ -156,8 +156,11 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
 
 (defun mix-project-compile ()
   (interactive)
-  (let ((default-directory (mix-find-project-root mix-prefer-umbrella)))
-    (compilation-start "mix compile"
+  (let ((default-directory (mix-find-project-root mix-prefer-umbrella))
+        (cmd (if current-prefix-arg
+                 (completing-read "Command: " nil nil nil "mix compile")
+               "mix compile")))
+    (compilation-start cmd
                        #'mix-compilation-mode
                        #'mix-compilation--buffer-name)))
 
@@ -165,8 +168,11 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
   (interactive)
   (let* ((default-directory (mix-find-project-root mix-prefer-umbrella))
          (task (mix--remove-task-comment
-                (completing-read "Select mix task: " (mix--all-available-tasks default-directory)))))
-    (compilation-start (concat "mix " task)
+                (completing-read "Select mix task: " (mix--all-available-tasks default-directory))))
+         (final-task (if current-prefix-arg
+                         (completing-read "Command: " nil nil nil task)
+                       task)))
+    (compilation-start (concat "mix " final-task)
                        #'mix-compilation-mode
                        #'mix-compilation--buffer-name)))
 
