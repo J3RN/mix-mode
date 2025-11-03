@@ -59,7 +59,7 @@ If ther is no umbrella project, the value of this variable is irrelevant."
     (define-key map (kbd "s") #'mix-project-run-shell)
     map)
   "Keymap to be invoked post-prefix.")
-(fset 'elixir-test-command-map elixir-test-command-map)
+(fset 'mix-command-map mix-command-map)
 
 (defvar mix-mode-map (make-sparse-keymap)
   "An empty keymap primarily for setting the prefix.")
