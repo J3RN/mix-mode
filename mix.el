@@ -111,6 +111,10 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
   "Remove the first `mix` word from TASK string."
   (cdr (split-string task "mix[[:blank:]]")))
 
+(defun mix--remove-task-comment (task)
+  "Remove the comment from TASK."
+  (string-trim (car (string-split task "#"))))
+
 
 
 ;;; Compilation mode
@@ -160,7 +164,8 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
 (defun mix-execute-task ()
   (interactive)
   (let* ((default-directory (mix-find-project-root mix-prefer-umbrella))
-         (task (completing-read "select mix task: " (mix--all-available-tasks default-directory))))
+         (task (mix--remove-task-comment
+                (completing-read "Select mix task: " (mix--all-available-tasks default-directory)))))
     (compilation-start (concat "mix " task)
                        #'mix-compilation-mode
                        #'mix-compilation--buffer-name)))
