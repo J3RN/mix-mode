@@ -122,11 +122,11 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
 (add-to-list 'compilation-error-regexp-alist-alist '(elixir "\\([^ ]+\\.\\(?:[lh]?eex\\|exs?\\)\\):\\([0-9]+\\)" 1 2))
 (add-to-list 'compilation-error-regexp-alist 'elixir)
 
-(define-derived-mode mix-compilation-mode compilation-mode "Elixir Test"
+(define-derived-mode mix-compilation-mode compilation-mode "Mix"
   (setq-local compilation-error-regexp-alist '(elixir)))
 
 (defun mix-compilation--buffer-name (mode)
-  "Use `MODE' to create the name for the elixir-test-output buffer."
+  "Use `MODE' to create the name for the mix-compilation-output buffer."
   (concat "*" mode " " (mix--project-name default-directory) "*"))
 
 
