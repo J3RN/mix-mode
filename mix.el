@@ -168,7 +168,7 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
   (interactive)
   (let* ((default-directory (mix-find-project-root mix-prefer-umbrella))
          (task (mix--remove-task-comment
-                (completing-read "Select mix task: " (mix--all-available-tasks default-directory))))
+                (completing-read "Select mix task: " (mix--all-available-tasks default-directory) nil nil nil 'mix-selected-task)))
          (final-task (if current-prefix-arg
                          (read-from-minibuffer "Command: " task)
                        task)))
