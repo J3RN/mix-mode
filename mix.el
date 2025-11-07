@@ -125,9 +125,10 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
 (define-derived-mode mix-compilation-mode compilation-mode "Mix"
   (setq-local compilation-error-regexp-alist '(elixir)))
 
-(defun mix-compilation--buffer-name (mode)
-  "Use `MODE' to create the name for the mix-compilation-output buffer."
-  (concat "*" mode " " (mix--project-name default-directory) "*"))
+(defun mix-compilation--buffer-name (cmd)
+  "Use CMD to generate a compilation name function."
+  (lambda (mode)
+    (concat "*" mode " " cmd " " (mix--project-name default-directory) "*")))
 
 
 
@@ -162,7 +163,7 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
                "mix compile")))
     (compilation-start cmd
                        #'mix-compilation-mode
-                       #'mix-compilation--buffer-name)))
+                       (mix-compilation--buffer-name cmd))))
 
 (defun mix-execute-task ()
   (interactive)
@@ -174,7 +175,7 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
                        task)))
     (compilation-start (concat "mix " final-task)
                        #'mix-compilation-mode
-                       #'mix-compilation--buffer-name)))
+                       (mix-compilation--buffer-name final-task))))
 
 
 (provide 'mix)
