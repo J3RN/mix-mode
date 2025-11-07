@@ -119,7 +119,7 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
 
 ;;; Compilation mode
 
-(add-to-list 'compilation-error-regexp-alist-alist '(elixir "\\([^ ]+\\.\\(?:[lh]?eex\\|exs?\\)\\):\\([0-9]+\\)" 1 2))
+(add-to-list 'compilation-error-regexp-alist-alist '(elixir "\\([^ \n]+\\.\\(?:[lh]?eex\\|exs?\\)\\):\\([0-9]+\\)" 1 2))
 (add-to-list 'compilation-error-regexp-alist 'elixir)
 
 (define-derived-mode mix-compilation-mode compilation-mode "Mix"
