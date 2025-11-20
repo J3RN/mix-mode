@@ -123,7 +123,8 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
 (add-to-list 'compilation-error-regexp-alist 'elixir)
 
 (define-derived-mode mix-compilation-mode compilation-mode "Mix"
-  (setq-local compilation-error-regexp-alist '(elixir)))
+  (setq-local compilation-error-regexp-alist '(elixir))
+  (add-hook 'mix-compilation-mode-hook #'mix-mode))
 
 (defun mix-compilation--buffer-name (cmd)
   "Use CMD to generate a compilation name function."
