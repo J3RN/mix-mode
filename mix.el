@@ -135,16 +135,16 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
 
 ;;; Public API
 
-(defun mix-find-umbrella-root (start-dir)
+(defun mix-umbrella-root (start-dir)
   "Traverse upwards from START-DIR until highest mix.exs file is discovered."
   (when-let ((project-dir (locate-dominating-file start-dir "mix.exs")))
-    (or (mix-find-umbrella-root (mix--up-directory project-dir))
+    (or (mix-umbrella-root (mix--up-directory project-dir))
         project-dir)))
 
-(defun mix-find-project-root (&optional prefer-umbrella)
+(defun mix-project-root (&optional prefer-umbrella)
   "Find the root of the current Elixir project."
   (if prefer-umbrella
-      (mix-find-umbrella-root default-directory)
+      (mix-umbrella-root default-directory)
     (locate-dominating-file default-directory "mix.exs")))
 
 
@@ -153,12 +153,12 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
 
 (defun mix-project-run-shell ()
   (interactive)
-  (let ((default-directory (mix-find-project-root mix-prefer-umbrella)))
+  (let ((default-directory (mix-project-root mix-prefer-umbrella)))
     (shell)))
 
 (defun mix-project-compile ()
   (interactive)
-  (let ((default-directory (mix-find-project-root mix-prefer-umbrella))
+  (let ((default-directory (mix-project-root mix-prefer-umbrella))
         (cmd (if current-prefix-arg
                  (read-from-minibuffer "Command: " "mix compile")
                "mix compile")))
@@ -168,7 +168,7 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
 
 (defun mix-execute-task ()
   (interactive)
-  (let* ((default-directory (mix-find-project-root mix-prefer-umbrella))
+  (let* ((default-directory (mix-project-root mix-prefer-umbrella))
          (task (mix--remove-task-comment
                 (completing-read "Select mix task: " (mix--all-available-tasks default-directory) nil nil nil 'mix-selected-task)))
          (final-task (if current-prefix-arg
