@@ -181,6 +181,22 @@ Use `mix--all-available-tasks` to fetch formatted and filetered tasks."
                        (mix-compilation--buffer-name final-task))))
 
 
+
+;;; Configure Project to find mix projects
+
+(defun mix-project-find-root (dir)
+  "Allow project.el to find mix projects in DIR."
+  (when-let (project-root (mix-project-root :directory dir))
+    `(mix . ,project-root)))
+
+(if (fboundp 'project-root)
+    (cl-defmethod project-root ((project (head mix)))
+      (cdr project)))
+
+(add-hook 'project-find-functions #'mix-project-find-root)
+
+
+
 (provide 'mix)
 
 ;;; mix.el ends here
